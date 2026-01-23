@@ -1,0 +1,15 @@
+- Description
+- Instructions
+- Resources
+
+- The complete structure and format of the config file.
+- The maze generation algorithm we chose.
+- Why we chose this algorithm.
+- What part of the code is reusable, and how.
+- Our team and project management with:
+--- The roles of each team member.
+--- Our anticipated planning and how it evolved until the end
+--- What worked well and what could be improved
+--- Have we used any specific tools? Which ones?
+- Description of advanced features (multiple algorithms, display options) if they were implemented
+- Documentation for mazegen 
