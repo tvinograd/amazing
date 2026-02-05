@@ -21,20 +21,20 @@
 # Binary  Hex  N  E  S  W
 # -----------------------
 # 0000    0    O  O  O  O
-# 0001    1    C  O  O  O
-# 0010    2    O  C  O  O
-# 0011    3    C  C  O  O
-# 0100    4    O  O  C  O
-# 0101    5    C  O  C  O
+# 0001    1    O  O  O  C
+# 0010    2    O  O  C  O
+# 0011    3    O  O  C  C
+# 0100    4    O  C  O  O
+# 0101    5    O  C  O  C
 # 0110    6    O  C  C  O
-# 0111    7    C  C  C  O
-# 1000    8    O  O  O  C
+# 0111    7    O  C  C  C
+# 1000    8    C  O  O  O
 # 1001    9    C  O  O  C
-# 1010    A    O  C  O  C
-# 1011    B    C  C  O  C
-# 1100    C    O  O  C  C
-# 1101    D    C  O  C  C
-# 1110    E    O  C  C  C
+# 1010    A    C  O  C  O
+# 1011    B    C  O  C  C
+# 1100    C    C  C  O  O
+# 1101    D    C  C  O  C
+# 1110    E    C  C  C  O
 # 1111    F    C  C  C  C
 # - entry coordinates (e.g., 1,1) \n
 # - exit coordinates \n
