@@ -1,4 +1,4 @@
-# Main program file
+# Main program file 
 
 # Errors to handle:
 # - invalid configuration
