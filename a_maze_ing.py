@@ -1,4 +1,4 @@
-# Main program file
+# Main program file 
 
 # Errors to handle:
 # - invalid configuration
@@ -18,7 +18,7 @@
 # | 2       | South     |
 # | 3       | West      |
 # Closed wall sets bit to 1, open - 0: (MIGHT BE WRONG)
-# Binary  Hex  N  E  S  W
+# Binary  Hex  W  S  E  N
 # -----------------------
 # 0000    0    O  O  O  O
 # 0001    1    O  O  O  C
