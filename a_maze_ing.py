@@ -60,38 +60,6 @@
 import random
 from models.MazeGenerator import MazeGenerator
 
-# def print_canvas(canvas: Canvas) -> None:
-#     for y in range(canvas.height):
-#         for x in range(canvas.width):
-#             cell = canvas.get_cell(x, y)
-#             print(f"{cell.direction.get_unicode()}", end=" ")
-#         print()
-#     print()
-#     print(*canvas.entry, sep=", ")
-#     print(*canvas.exit, sep=", ")
-
-
-# def print_canvas_visits(canvas: Canvas) -> None:
-#     print()
-#     for y in range(canvas.height):
-#         for x in range(canvas.width):
-#             cell = canvas.get_cell(x, y)
-#             print("0" if cell.is_visited else "-", end=" ")
-#         print()
-
-from models.Canvas import Canvas
-def print_canvas_values(canvas: Canvas) -> None:
-    for y in range(canvas.height):
-        for x in range(canvas.width):
-            cell = canvas.get_cell(x, y)
-            print(f"{cell.direction.value:x}".upper(), end="")
-        print()
-
-# def print_dead_ends(canvas: Canvas) -> None:
-#     for cell1, cell2 in canvas.dead_ends:
-#         print(cell1.coordinate, cell2.coordinate, end=" ")
-#         print()
-
 
 if __name__ == "__main__":
     width = 5
@@ -111,7 +79,6 @@ if __name__ == "__main__":
     try:
         while True:
             # maze_generator.renderer.render_maze()
-            print_canvas_values(maze_generator.canvas)
             print("\n=== A-Maze-ing ===")
             print("1. Re-generate a new maze")
             print("2. Show/Hide path from entry to exit")
