@@ -55,3 +55,80 @@
 # 3. Rotate maze colors
 # 4. Quit
 # Choise? (1-4): 
+
+
+import random
+from models.MazeGenerator import MazeGenerator
+
+# def print_canvas(canvas: Canvas) -> None:
+#     for y in range(canvas.height):
+#         for x in range(canvas.width):
+#             cell = canvas.get_cell(x, y)
+#             print(f"{cell.direction.get_unicode()}", end=" ")
+#         print()
+#     print()
+#     print(*canvas.entry, sep=", ")
+#     print(*canvas.exit, sep=", ")
+
+
+# def print_canvas_visits(canvas: Canvas) -> None:
+#     print()
+#     for y in range(canvas.height):
+#         for x in range(canvas.width):
+#             cell = canvas.get_cell(x, y)
+#             print("0" if cell.is_visited else "-", end=" ")
+#         print()
+
+from models.Canvas import Canvas
+def print_canvas_values(canvas: Canvas) -> None:
+    for y in range(canvas.height):
+        for x in range(canvas.width):
+            cell = canvas.get_cell(x, y)
+            print(f"{cell.direction.value:x}".upper(), end="")
+        print()
+
+# def print_dead_ends(canvas: Canvas) -> None:
+#     for cell1, cell2 in canvas.dead_ends:
+#         print(cell1.coordinate, cell2.coordinate, end=" ")
+#         print()
+
+
+if __name__ == "__main__":
+    width = 5
+    height = 5
+    entry = (0, 0)
+    exit = (4, 4)
+
+    # random.seed(42)
+
+    maze_generator = MazeGenerator()
+    maze_generator.set_canvas(width, height, entry, exit)
+    # maze_generator.set_renderer()
+    maze_generator.generate_maze() # perfect
+    # maze_generator.generate_maze(False) # imperfect
+    maze_generator.solve_maze()
+
+    try:
+        while True:
+            # maze_generator.renderer.render_maze()
+            print_canvas_values(maze_generator.canvas)
+            print("\n=== A-Maze-ing ===")
+            print("1. Re-generate a new maze")
+            print("2. Show/Hide path from entry to exit")
+            print("3. Rotate maze colors")
+            print("4. Quit")
+            choice = input("Choice? (1-4): ")
+
+            if choice == "1":
+                maze_generator.regenerate_maze() # perfect
+                # maze_generator.regenerate_maze(False) # imperfect
+                maze_generator.solve_maze()
+            # elif choice == "2":
+            #     maze_generator.renderer.show_path = not maze_generator.renderer.show_path
+            # elif choice == "3":
+            #     maze_generator.renderer.color_index = (maze_generator.renderer.color_index + 1) % len(maze_generator.renderer.wall_colors)
+            elif choice == "4":
+                print("Bye!")
+                break
+    except KeyboardInterrupt:
+        print("\nBye!")
