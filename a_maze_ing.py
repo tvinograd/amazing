@@ -57,7 +57,7 @@
 # Choise? (1-4): 
 
 
-from models.MazeGenerator import MazeGenerator
+from models.maze_generator import MazeGenerator
 import sys
 
 
