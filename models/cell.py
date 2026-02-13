@@ -1,4 +1,4 @@
-from models.Direction import Direction
+from models.direction import Direction
 
 class Cell:
     def __init__(self, x: int, y: int) -> None:

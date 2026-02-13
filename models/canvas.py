@@ -1,5 +1,5 @@
-from models.Cell import Cell
-from models.Direction import Direction
+from models.cell import Cell
+from models.direction import Direction
 
 class Canvas():
     def __init__(self, width: int, height: int, entry: tuple[int, int], exit: tuple[int, int]) -> None:

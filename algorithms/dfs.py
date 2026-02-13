@@ -1,5 +1,5 @@
-from models.Canvas import Canvas
-from models.Cell import Cell
+from models.canvas import Canvas
+from models.cell import Cell
 import random
 
 def generate_maze(canvas: Canvas, start_cell: Cell, rng: random.Random) -> None:

@@ -1,6 +1,6 @@
-from models.Cell import Cell
-from models.Direction import Direction
-from models.Canvas import Canvas
+from models.cell import Cell
+from models.direction import Direction
+from models.canvas import Canvas
 from algorithms import dfs
 from collections import deque
 import random
