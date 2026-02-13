@@ -57,7 +57,6 @@
 # Choise? (1-4): 
 
 
-import random
 from models.MazeGenerator import MazeGenerator
 
 
@@ -66,10 +65,9 @@ if __name__ == "__main__":
     height = 5
     entry = (0, 0)
     exit = (4, 4)
+    seed = 42
 
-    # random.seed(42)
-
-    maze_generator = MazeGenerator()
+    maze_generator = MazeGenerator(seed)
     maze_generator.set_canvas(width, height, entry, exit)
     # maze_generator.set_renderer()
     maze_generator.generate_maze() # perfect
