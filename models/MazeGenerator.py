@@ -14,7 +14,15 @@ class MazeGenerator():
     def set_canvas(self, width: int, height: int, entry: tuple[int, int], exit: tuple[int, int]) -> None:
         self.canvas = Canvas(width, height, entry, exit)
         if width >= 9 and height >= 7:
-            self.put_forty_two()
+            self.put_ft_cells()
+
+            entry_cell = self.canvas.get_cell(entry[0], entry[1])
+            if entry_cell in self.canvas.ft_cells:
+                raise ValueError("Please change entry coordinates. It is reserved for '42' pattern")
+
+            exit_cell = self.canvas.get_cell(exit[0], exit[1])
+            if exit_cell in self.canvas.ft_cells:
+                raise ValueError("Please change exit coordinates. It is reserved for '42' pattern")
 
     # # when class Renderer exist
     # def set_renderer(self):
@@ -55,7 +63,7 @@ class MazeGenerator():
             self.canvas.remove_wall(cell, neighbour)
 
 
-    def put_forty_two(self) -> None:
+    def put_ft_cells(self) -> None:
         x_mid = self.canvas.width // 2
         y_mid = self.canvas.height // 2
         cells_to_close = [
