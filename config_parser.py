@@ -1,63 +1,52 @@
-"""Configuration file parser for maze generation."""
-
-from typing import Any
+"""Configuration file parser for maze generation using Pydantic."""
 
 
-REQUIRED_KEYS: set[str] = {
-    "WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"
-}
+from pydantic import BaseModel, Field, model_validator
 
 
-def _parse_coordinates(value: str) -> tuple[int, int]:
-    """Parse 'x,y' string into a tuple of two integers."""
+class MazeConfig(BaseModel):
+    """Maze configuration with validated fields."""
+
+    WIDTH: int = Field(gt=0)
+    HEIGHT: int = Field(gt=0)
+    ENTRY: tuple[int, int]
+    EXIT: tuple[int, int]
+    OUTPUT_FILE: str = Field(min_length=1)
+    PERFECT: bool
+
+    @model_validator(mode='after')
+    def validate_coordinates(self) -> 'MazeConfig':
+        """Check that entry and exit are within maze bounds."""
+        entry_x, entry_y = self.ENTRY
+        exit_x, exit_y = self.EXIT
+
+        if not (0 <= entry_x < self.WIDTH and 0 <= entry_y < self.HEIGHT):
+            raise ValueError(f"ENTRY {self.ENTRY} is outside maze bounds")
+        if not (0 <= exit_x < self.WIDTH and 0 <= exit_y < self.HEIGHT):
+            raise ValueError(f"EXIT {self.EXIT} is outside maze bounds")
+        if self.ENTRY == self.EXIT:
+            raise ValueError("ENTRY and EXIT must be different")
+
+        return self
+
+
+def _parse_coordinate_string(value: str) -> tuple[int, int]:
+    """Convert '0,0' string to tuple."""
     parts = value.split(",")
     if len(parts) != 2:
-        raise ValueError
+        raise ValueError(f"Invalid coordinate format: {value}")
     return (int(parts[0].strip()), int(parts[1].strip()))
 
 
-def _convert_values(raw: dict[str, str]) -> dict[str, Any]:
-    """Convert raw string values to appropriate types."""
-    config: dict[str, Any] = {}
-
-    # Height/width -> int
-    try:
-        config["WIDTH"] = int(raw["WIDTH"])
-        config["HEIGHT"] = int(raw["HEIGHT"])
-    except ValueError:
-        print("Error: WIDTH and HEIGHT must be integers.")
-        return {}
-
-    # Entry/exit -> int tuple
-    try:
-        config["ENTRY"] = _parse_coordinates(raw["ENTRY"])
-        config["EXIT"] = _parse_coordinates(raw["EXIT"])
-    except ValueError:
-        print("Error: ENTRY and EXIT must be in format 'x,y' with integers.")
-        return {}
-
-    # Perfect -> bool
-    if raw["PERFECT"].lower() not in ("true", "false"):
-        print("Error: PERFECT must be 'True' or 'False'.")
-        return {}
-    config["PERFECT"] = raw["PERFECT"].lower() == "true"
-
-    # Output file name -> str
-    config["OUTPUT_FILE"] = raw["OUTPUT_FILE"]
-
-    return config
-
-
-def parse_config(filepath: str) -> dict[str, Any]:
+def parse_config(filepath: str) -> MazeConfig | None:
     """Parse a maze configuration file."""
-
     # Read file
     try:
         with open(filepath, "r") as file:
             lines = file.readlines()
-    except (FileNotFoundError, PermissionError) as e:
+    except OSError as e:
         print(f"Error: {e}")
-        return {}
+        return None
 
     # Parse KEY=VALUE pairs
     raw: dict[str, str] = {}
@@ -67,7 +56,7 @@ def parse_config(filepath: str) -> dict[str, Any]:
             continue
         if "=" not in stripped:
             print(f"Error: Invalid syntax on line {line_num}: '{stripped}'")
-            return {}
+            return None
 
         key, value = stripped.split("=", 1)
         key = key.strip()
@@ -75,25 +64,42 @@ def parse_config(filepath: str) -> dict[str, Any]:
 
         if not key:
             print(f"Error: Missing key on line {line_num}.")
-            return {}
+            return None
+
+        if not value:
+            print(f"Error: Missing value for '{key}' on line {line_num}.")
+            return None
 
         raw[key] = value
 
-    # Check required keys
-    missing = REQUIRED_KEYS - raw.keys()
-    if missing:
-        print(f"Error: Missing required keys: {', '.join(missing)}")
-        return {}
+    # Pre-process coordinates and boolean
+    try:
+        if "ENTRY" in raw:
+            raw["ENTRY"] = _parse_coordinate_string(raw["ENTRY"])
+        if "EXIT" in raw:
+            raw["EXIT"] = _parse_coordinate_string(raw["EXIT"])
+        if "PERFECT" in raw:
+            raw["PERFECT"] = raw["PERFECT"].lower() == "true"
+    except ValueError as e:
+        print(f"Error: {e}")
+        return None
 
-    # Convert types and return
-    return _convert_values(raw)
+    # Validate with Pydantic
+    try:
+        return MazeConfig(**raw)
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 
 if __name__ == "__main__":
     config = parse_config("config.txt")
     if config:
-        print("Configuration file parsing is successful:")
-        for key, value in config.items():
-            print(f"  {key}: {value} ({type(value).__name__})")
+        print("Configuration parsed successfully:")
+        print(f"  Size: {config.WIDTH}x{config.HEIGHT}")
+        print(f"  Entry: {config.ENTRY}")
+        print(f"  Exit: {config.EXIT}")
+        print(f"  Perfect: {config.PERFECT}")
+        print(f"  Output: {config.OUTPUT_FILE}")
     else:
-        print("Configuration file parsing failed.")
+        print("Configuration parsing failed.")
