@@ -58,17 +58,22 @@
 
 
 from models.MazeGenerator import MazeGenerator
+import sys
 
 
 if __name__ == "__main__":
-    width = 5
-    height = 5
-    entry = (0, 0)
-    exit = (4, 4)
+    width = 9
+    height = 7
+    entry = (0, 1)
+    exit = (7, 5)
     seed = 42
 
     maze_generator = MazeGenerator(seed)
-    maze_generator.set_canvas(width, height, entry, exit)
+    try:
+        maze_generator.set_canvas(width, height, entry, exit)
+    except ValueError as e:
+        print(e)
+        sys.exit(1)
     # maze_generator.set_renderer()
     maze_generator.generate_maze() # perfect
     # maze_generator.generate_maze(False) # imperfect
