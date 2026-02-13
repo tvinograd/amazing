@@ -3,9 +3,13 @@ from models.Direction import Direction
 from models.Canvas import Canvas
 from algorithms import dfs
 from collections import deque
+import random
 
 
 class MazeGenerator():
+    def __init__(self, seed: int | None = None) -> None:
+        self.seed = seed
+        self.rng = random.Random(seed)
 
     def set_canvas(self, width: int, height: int, entry: tuple[int, int], exit: tuple[int, int]) -> None:
         self.canvas = Canvas(width, height, entry, exit)
@@ -19,11 +23,11 @@ class MazeGenerator():
     def generate_maze(self, perfect: bool = True) -> None:
         self.perfect = perfect
         try:
-            dfs.generate_maze(self.canvas, self.canvas.cells[0])
+            dfs.generate_maze(self.canvas, self.canvas.cells[0], self.rng)
             if not perfect:
                 self.remove_dend_walls()
             while self.has_forbidden_opened_block():
-                dfs.generate_maze(self.canvas, self.canvas.cells[0])
+                dfs.generate_maze(self.canvas, self.canvas.cells[0], self.rng)
                 if not perfect:
                     self.remove_dend_walls()
 
@@ -39,6 +43,7 @@ class MazeGenerator():
         # # when class Renderer exist
         # self.renderer.cells = []
         # self.renderer.show_path = False
+        self.rng = random.Random(self.seed)
         self.set_canvas(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit)
         self.generate_maze(self.perfect)
 
