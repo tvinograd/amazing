@@ -1,1 +1,4 @@
 # Exclude Python artifacts
+__pycache__
+.mypy
+env
