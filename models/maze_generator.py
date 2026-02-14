@@ -1,6 +1,7 @@
 from models.cell import Cell
 from models.direction import Direction
 from models.canvas import Canvas
+from models.renderer import Renderer
 from algorithms import dfs
 from collections import deque
 import random
@@ -24,9 +25,8 @@ class MazeGenerator():
             if exit_cell in self.canvas.ft_cells:
                 raise ValueError("Please change exit coordinates. It is reserved for '42' pattern")
 
-    # # when class Renderer exist
-    # def set_renderer(self):
-    #     self.renderer = Renderer(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit, [], "")
+    def set_renderer(self):
+        self.renderer = Renderer(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit, [], "")
 
     def generate_maze(self, perfect: bool = True) -> None:
         self.perfect = perfect
@@ -42,15 +42,13 @@ class MazeGenerator():
             for y in range(self.canvas.height):
                 for x in range(self.canvas.width):
                     cell = self.canvas.get_cell(x, y)
-                    # # when class Renderer exist
-                    # self.renderer.cells.append(cell.direction.value)
+                    self.renderer.cells.append(cell.direction.value)
         except AttributeError as e:
             print("Got error:", e)
 
     def regenerate_maze(self) -> None:
-        # # when class Renderer exist
-        # self.renderer.cells = []
-        # self.renderer.show_path = False
+        self.renderer.cells = []
+        self.renderer.show_path = False
         self.rng = random.Random(self.seed)
         self.set_canvas(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit)
         self.generate_maze(self.perfect)
@@ -109,8 +107,7 @@ class MazeGenerator():
             cell.is_visited = True
 
             if cell.coordinate == self.canvas.exit:
-                # # when class Renderer exist
-                # self.renderer.solution = self.convert_path_to_str(path)
+                self.renderer.solution = self.convert_path_to_str(path)
                 return
 
             for neighbour in self.canvas.get_accessible_neighbours(cell):
