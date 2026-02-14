@@ -73,17 +73,25 @@ class Canvas():
 
         # neighbour is WEST of cell
         if neighbour.coordinate == (x-1, y):
-            cell.direction = Direction(cell.direction.value - 8)
-            neighbour.direction = Direction(neighbour.direction.value - 2)
+            if cell.direction.value & 8:
+                cell.direction = Direction(cell.direction.value - 8)
+            if neighbour.direction.value & 2:
+                neighbour.direction = Direction(neighbour.direction.value - 2)
         # neighbour is NORTH of cell
         elif neighbour.coordinate == (x, y-1):
-            cell.direction = Direction(cell.direction.value - 1)
-            neighbour.direction = Direction(neighbour.direction.value - 4)
+            if cell.direction.value & 1:
+                cell.direction = Direction(cell.direction.value - 1)
+            if neighbour.direction.value & 4:
+                neighbour.direction = Direction(neighbour.direction.value - 4)
         # neighbour is EAST of cell
         elif neighbour.coordinate == (x+1, y):
-            cell.direction = Direction(cell.direction.value - 2)
-            neighbour.direction = Direction(neighbour.direction.value - 8)
+            if cell.direction.value & 2:
+                cell.direction = Direction(cell.direction.value - 2)
+            if neighbour.direction.value & 8:
+                neighbour.direction = Direction(neighbour.direction.value - 8)
         # neighbour is SOUTH of cell
         elif neighbour.coordinate == (x, y+1):
-            cell.direction = Direction(cell.direction.value - 4)
-            neighbour.direction = Direction(neighbour.direction.value - 1)
+            if cell.direction.value & 4:
+                cell.direction = Direction(cell.direction.value - 4)
+            if neighbour.direction.value & 1:
+                neighbour.direction = Direction(neighbour.direction.value - 1)
