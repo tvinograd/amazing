@@ -42,6 +42,7 @@ class Renderer():
 
         self.color_index = 0
         self.show_path = False
+        self.path_animated = False
         self.grid_width = width * 2 + 1
         self.grid_height = height * 2 + 1
         self.entry_y = entry[1] * 2 + 1
@@ -108,12 +109,16 @@ class Renderer():
                                               f"{Presets.WALL.value}"
                                               f"{Presets.RESET.value}")
 
-                    # Draw path
-                    print("\033c", end="")
-                    for row_printed in grid:
-                        print("".join(row_printed))
-                    time.sleep(0.05)
-                return
+                    # Draw path (first time)
+                    if not self.path_animated:
+                        print("\033c", end="")
+                        for row_printed in grid:
+                            print("".join(row_printed))
+                        time.sleep(0.05)
+                    
+                if not self.path_animated:
+                    self.path_animated = True
+                    return
 
             # Draw maze
             for row_printed in grid:
