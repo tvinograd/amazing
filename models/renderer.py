@@ -1,3 +1,5 @@
+import select
+import sys
 import time
 from enum import Enum
 
@@ -50,6 +52,17 @@ class Renderer():
         self.exit_y = exit[1] * 2 + 1
         self.exit_x = exit[0] * 2 + 1
 
+    def check_skip(self) -> None:
+        if select.select([sys.stdin], [], [], 0)[0]:
+            sys.stdin.readline()
+            return True
+        return False
+
+    def draw_grid(self, grid: list[list[str]]) -> None:
+        print("\033c", end="")
+        for row_printed in grid:
+            print("".join(row_printed))
+
     def render_maze(self) -> None:
         try:
             print("\033c", end="")
@@ -91,6 +104,8 @@ class Renderer():
             if self.show_path:
                 sol_y = self.entry_y
                 sol_x = self.entry_x
+                skip_animation = False
+
                 for step in self.solution:
                     step_y, step_x = self.sol_mov[step]
 
@@ -109,20 +124,23 @@ class Renderer():
                                               f"{Presets.WALL.value}"
                                               f"{Presets.RESET.value}")
 
-                    # Draw path (first time)
-                    if not self.path_animated:
-                        print("\033c", end="")
-                        for row_printed in grid:
-                            print("".join(row_printed))
+                    # Animate only if the first time and not skipped
+                    if not self.path_animated and not skip_animation:
+                        self.draw_grid(grid)
                         time.sleep(0.05)
+
+                        if self.check_skip():
+                            skip_animation = True
                     
                 if not self.path_animated:
                     self.path_animated = True
+
+                    if skip_animation:
+                        self.draw_grid(grid)
                     return
 
             # Draw maze
-            for row_printed in grid:
-                print("".join(row_printed))
+            self.draw_grid(grid)
 
         except KeyboardInterrupt:
             print("\nBye!")

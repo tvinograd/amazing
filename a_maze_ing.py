@@ -72,25 +72,30 @@ if __name__ == "__main__":
     maze_generator.generate_maze()
     maze_generator.solve_maze()
 
-    while True:
-        maze_generator.renderer.render_maze()
-        print("\n=== A-Maze-ing ===")
-        print("1. Re-generate a new maze")
-        print("2. Show/Hide path from entry to exit")
-        print("3. Rotate maze colors")
-        print("4. Quit")
-        choice = input("Choice? (1-4): ")
+    try:
+        while True:
+            maze_generator.renderer.render_maze()
+            print("\n=== A-Maze-ing ===")
+            print("1. Re-generate a new maze")
+            print("2. Show/Hide path from entry to exit")
+            print("3. Rotate maze colors")
+            print("4. Quit")
+            choice = input("Choice? (1-4): ")
 
-        if choice == "1":
-            maze_generator.regenerate_maze()
-            maze_generator.solve_maze()
-            maze_generator.renderer.path_animated = False
-        elif choice == "2":
-            maze_generator.renderer.show_path = not maze_generator.renderer.show_path
-            if not maze_generator.renderer.show_path:
+            if choice == "1":
+                maze_generator.regenerate_maze()
+                maze_generator.solve_maze()
                 maze_generator.renderer.path_animated = False
-        elif choice == "3":
-            maze_generator.renderer.color_index = (maze_generator.renderer.color_index + 1) % len(maze_generator.renderer.wall_colors)
-        elif choice == "4":
-            print("Bye!")
-            break
+            elif choice == "2":
+                maze_generator.renderer.show_path = not maze_generator.renderer.show_path
+                if not maze_generator.renderer.show_path:
+                    maze_generator.renderer.path_animated = False
+            elif choice == "3":
+                maze_generator.renderer.color_index = (maze_generator.renderer.color_index + 1) % len(maze_generator.renderer.wall_colors)
+            elif choice == "4":
+                print("Bye!")
+                break
+    except KeyboardInterrupt:
+        print("\nBye!")
+        exit(1)
+
