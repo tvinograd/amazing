@@ -1,6 +1,7 @@
 import select
 import sys
 import time
+import shutil
 from enum import Enum
 
 
@@ -57,6 +58,20 @@ class Renderer():
             sys.stdin.readline()
             return True
         return False
+    
+    def check_terminal_size(self) -> None:
+        term_size = shutil.get_terminal_size()
+        term_width = term_size.columns
+        required_width = self.grid_width * 2
+
+
+        if term_width < required_width:
+            print("\nYour terminal is not wide enough to display the maze "
+                  "correctly. We recommend resizing your window first.")
+            size_choice = input ("\nRender anyway? (y/n): ").lower().strip()
+            return size_choice in ("y", "yes")
+
+        return True
 
     def draw_grid(self, grid: list[list[str]]) -> None:
         print("\033c", end="")
@@ -65,6 +80,9 @@ class Renderer():
 
     def render_maze(self) -> None:
         try:
+            if not self.check_terminal_size():
+                return
+
             print("\033c", end="")
             colored_wall = (f"{self.wall_colors[self.color_index].value}"
                             f"{Presets.WALL.value}{Presets.RESET.value}")
