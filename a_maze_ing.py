@@ -62,26 +62,19 @@ import sys
 
 
 if __name__ == "__main__":
-    width = 9
-    height = 7
-    entry = (0, 1)
-    exit = (7, 5)
-    seed = 42
-
-    maze_generator = MazeGenerator(seed)
+    maze_generator = MazeGenerator("config.txt")
     try:
-        maze_generator.set_canvas(width, height, entry, exit)
+        maze_generator.set_canvas()
     except ValueError as e:
         print(e)
         sys.exit(1)
-    # maze_generator.set_renderer()
-    maze_generator.generate_maze() # perfect
-    # maze_generator.generate_maze(False) # imperfect
+    maze_generator.set_renderer()
+    maze_generator.generate_maze()
     maze_generator.solve_maze()
 
     try:
         while True:
-            # maze_generator.renderer.render_maze()
+            maze_generator.renderer.render_maze()
             print("\n=== A-Maze-ing ===")
             print("1. Re-generate a new maze")
             print("2. Show/Hide path from entry to exit")
@@ -90,15 +83,19 @@ if __name__ == "__main__":
             choice = input("Choice? (1-4): ")
 
             if choice == "1":
-                maze_generator.regenerate_maze() # perfect
-                # maze_generator.regenerate_maze(False) # imperfect
+                maze_generator.regenerate_maze()
                 maze_generator.solve_maze()
-            # elif choice == "2":
-            #     maze_generator.renderer.show_path = not maze_generator.renderer.show_path
-            # elif choice == "3":
-            #     maze_generator.renderer.color_index = (maze_generator.renderer.color_index + 1) % len(maze_generator.renderer.wall_colors)
+                maze_generator.renderer.path_animated = False
+            elif choice == "2":
+                maze_generator.renderer.show_path = not maze_generator.renderer.show_path
+                if not maze_generator.renderer.show_path:
+                    maze_generator.renderer.path_animated = False
+            elif choice == "3":
+                maze_generator.renderer.color_index = (maze_generator.renderer.color_index + 1) % len(maze_generator.renderer.wall_colors)
             elif choice == "4":
                 print("Bye!")
                 break
     except KeyboardInterrupt:
         print("\nBye!")
+        exit(1)
+
