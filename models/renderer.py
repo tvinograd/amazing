@@ -1,4 +1,5 @@
 import select
+import signal
 import sys
 import time
 import shutil
@@ -28,16 +29,17 @@ class Renderer():
     ]
 
     sol_mov = {
-        "N": (-1, 0),  # North: row - 1
-        "E": (0, +1),  # East:  col + 1
-        "S": (+1, 0),  # South: row + 1
-        "W": (0, -1),  # West:  col - 1
+        "N": (0, -1),  # North: row - 1
+        "E": (+1, 0),  # East:  col + 1
+        "S": (0, +1),  # South: row + 1
+        "W": (-1, 0),  # West:  col - 1
     }
 
     wall_colors = [Presets.WHITE, Presets.YELLOW, Presets.GREY, Presets.CYAN]
 
-    def __init__(self, width: int, height: int, entry: tuple[int, int],
-                 exit: tuple[int, int], cells: list[int], solution: str) -> None:
+    def __init__(self, width: int, height: int,
+                 entry: tuple[int, int], exit: tuple[int, int],
+                 cells: list[int], solution: str) -> None:
         self.width = width
         self.height = height
         self.cells = cells
@@ -53,12 +55,20 @@ class Renderer():
         self.exit_y = exit[1] * 2 + 1
         self.exit_x = exit[0] * 2 + 1
 
+        signal.signal(signal.SIGTERM, self.signal_handler)
+        signal.signal(signal.SIGQUIT, self.signal_handler)
+        signal.signal(signal.SIGINT, self.signal_handler)
+
+    def signal_handler(self, signum: int, frame: any) -> None:
+        print("\nBye!")
+        exit(0)
+
     def check_skip(self) -> bool:
         if select.select([sys.stdin], [], [], 0)[0]:
             sys.stdin.readline()
             return True
         return False
-    
+
     def check_terminal_size(self) -> bool:
         term_size = shutil.get_terminal_size()
         term_width = term_size.columns
@@ -67,7 +77,7 @@ class Renderer():
         if term_width < required_width:
             print("\nYour terminal is not wide enough to display the maze "
                   "correctly. We recommend resizing your window first.")
-            size_choice = input ("\nRender anyway? (y/n): ").lower().strip()
+            size_choice = input("\nRender anyway? (y/n): ").lower().strip()
             return size_choice in ("y", "yes")
 
         return True
@@ -80,7 +90,8 @@ class Renderer():
     def render_maze(self) -> None:
         try:
             if not self.check_terminal_size():
-                return
+                print("\nBye!")
+                exit(0)
 
             print("\033c", end="")
             colored_wall = (f"{self.wall_colors[self.color_index].value}"
@@ -124,7 +135,7 @@ class Renderer():
                 skip_animation = False
 
                 for step in self.solution:
-                    step_y, step_x = self.sol_mov[step]
+                    step_x, step_y = self.sol_mov[step]
 
                     # Wall unit
                     sol_y += step_y
@@ -148,7 +159,7 @@ class Renderer():
 
                         if self.check_skip():
                             skip_animation = True
-                    
+
                 if not self.path_animated:
                     self.path_animated = True
 
@@ -159,8 +170,5 @@ class Renderer():
             # Draw maze
             self.draw_grid(grid)
 
-        except KeyboardInterrupt:
-            print("\nBye!")
-            exit(1)
         except Exception as e:
             print(f"Error while rendering: {e}")
