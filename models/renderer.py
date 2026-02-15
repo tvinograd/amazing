@@ -37,7 +37,7 @@ class Renderer():
     wall_colors = [Presets.WHITE, Presets.YELLOW, Presets.GREY, Presets.CYAN]
 
     def __init__(self, width: int, height: int, entry: tuple[int, int],
-                 exit: tuple[int, int], cells: list[int], solution: str):
+                 exit: tuple[int, int], cells: list[int], solution: str) -> None:
         self.width = width
         self.height = height
         self.cells = cells
@@ -53,17 +53,16 @@ class Renderer():
         self.exit_y = exit[1] * 2 + 1
         self.exit_x = exit[0] * 2 + 1
 
-    def check_skip(self) -> None:
+    def check_skip(self) -> bool:
         if select.select([sys.stdin], [], [], 0)[0]:
             sys.stdin.readline()
             return True
         return False
     
-    def check_terminal_size(self) -> None:
+    def check_terminal_size(self) -> bool:
         term_size = shutil.get_terminal_size()
         term_width = term_size.columns
         required_width = self.grid_width * 2
-
 
         if term_width < required_width:
             print("\nYour terminal is not wide enough to display the maze "

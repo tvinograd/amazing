@@ -13,6 +13,7 @@ class MazeGenerator():
     def __init__(self, config_file: str) -> None:
         config = ConfigParser().parse_config(config_file)
         if not config:
+            print("Failed to load configuration. Exiting.")
             sys.exit(1)
         self.width = config["WIDTH"]
         self.height = config["HEIGHT"]
