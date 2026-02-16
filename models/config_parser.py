@@ -58,6 +58,16 @@ class ConfigParser:
         else:
             config["SEED"] = None
 
+        # Algorithm -> str
+        algorithm = raw.get("ALGORITHM")
+        if not algorithm:
+            config["ALGORITHM"] = "dfs"
+        elif algorithm not in ("dfs", "hunt_and_kill"):
+            print("Wrong algorithm name")
+            exit(1)
+        else:
+            config["ALGORITHM"] = algorithm
+
         return config
 
     def parse_config(self, filepath: str) -> dict[str, Any]:

@@ -12,7 +12,7 @@
 
 # Optional keys:
 # - seed
-# - algorithm
+# - algorithm (dfs or hunt_and_kill)
 # - display mode, etc.
 
 WIDTH=20
@@ -21,3 +21,6 @@ ENTRY=0,0
 EXIT=19,14
 OUTPUT_FILE=output_maze.txt
 PERFECT=True
+#SEED=42
+ALGORITHM=dfs
+#ALGORITHM=hunt_and_kill
