@@ -1,8 +1,9 @@
 from models.canvas import Canvas
 from models.cell import Cell
+from typing import Generator
 import random
 
-def generate_maze(canvas: Canvas, cell: Cell, rng: random.Random) -> None:
+def generate_maze(canvas: Canvas, cell: Cell, rng: random.Random) -> Generator[str, None, None]:
 
     if not canvas or not cell:
         return
@@ -39,3 +40,4 @@ def generate_maze(canvas: Canvas, cell: Cell, rng: random.Random) -> None:
                     break
             if not found:
                 break
+        yield ""

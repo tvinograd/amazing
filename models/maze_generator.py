@@ -6,6 +6,7 @@ from models.renderer import Renderer
 from collections import deque
 import random
 import sys
+import time
 
 
 class MazeGenerator():
@@ -36,8 +37,12 @@ class MazeGenerator():
             if exit_cell in self.canvas.ft_cells:
                 raise ValueError("Please change exit coordinates. It is reserved for '42' pattern")
 
-    def set_renderer(self):
-        self.renderer = Renderer(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit, [], "")
+    def set_renderer(self, color_index: int = 0):
+        self.renderer = Renderer(self.canvas.width, self.canvas.height, self.canvas.entry, self.canvas.exit, [], "", color_index)
+        for y in range(self.canvas.height):
+                for x in range(self.canvas.width):
+                    cell = self.canvas.get_cell(x, y)
+                    self.renderer.cells.append(cell)
 
     def generate_maze(self) -> None:
         try:
@@ -45,7 +50,9 @@ class MazeGenerator():
                 from algorithms.dfs import generate_maze
             elif self.algorithm == "hunt_and_kill":
                 from algorithms.hunt_and_kill import generate_maze
-            generate_maze(self.canvas, self.canvas.cells[0], self.rng)
+            for _ in generate_maze(self.canvas, self.canvas.cells[0], self.rng):
+                self.renderer.render_maze()
+                time.sleep(0.01)
             if not self.perfect:
                 self.remove_dend_walls()
             while self.has_forbidden_opened_block():
@@ -54,25 +61,21 @@ class MazeGenerator():
                 if not self.perfect:
                     self.remove_dend_walls()
 
-            for y in range(self.canvas.height):
-                for x in range(self.canvas.width):
-                    cell = self.canvas.get_cell(x, y)
-                    self.renderer.cells.append(cell.direction.value)
         except AttributeError as e:
             print("Got error:", e)
 
     def regenerate_maze(self) -> None:
-        self.renderer.cells = []
         self.renderer.show_path = False
         self.rng = random.Random(self.seed)
         self.set_canvas()
+        self.set_renderer(self.renderer.color_index)
         self.generate_maze()
 
     def remove_dend_walls(self) -> None:
         if not len(self.canvas.dead_ends):
             return
-        for _ in range(len(self.canvas.dead_ends)//3 + 1):
-            cell, neighbour = self.canvas.dead_ends.pop()
+        for _ in range(len(self.canvas.dead_ends)//5 + 1):
+            cell, neighbour = self.rng.choice(self.canvas.dead_ends)
             self.canvas.remove_wall(cell, neighbour)
 
     def put_ft_cells(self) -> None:
@@ -145,7 +148,6 @@ class MazeGenerator():
                     continue
             return True
         return False
-
 
     @staticmethod
     def convert_path_to_str(path: list[Cell]) -> str:
