@@ -71,6 +71,7 @@ if __name__ == "__main__":
     maze_generator.set_renderer()
     maze_generator.generate_maze()
     maze_generator.solve_maze()
+    maze_generator.fill_output()
 
     try:
         while True:
@@ -85,6 +86,7 @@ if __name__ == "__main__":
             if choice == "1":
                 maze_generator.regenerate_maze()
                 maze_generator.solve_maze()
+                maze_generator.fill_output()
                 maze_generator.renderer.path_animated = False
             elif choice == "2":
                 maze_generator.renderer.show_path = not maze_generator.renderer.show_path
