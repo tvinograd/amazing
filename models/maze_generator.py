@@ -74,8 +74,8 @@ class MazeGenerator():
     def remove_dend_walls(self) -> None:
         if not len(self.canvas.dead_ends):
             return
-        for _ in range(len(self.canvas.dead_ends)//3 + 1):
-            cell, neighbour = self.canvas.dead_ends.pop()
+        for _ in range(len(self.canvas.dead_ends)//5 + 1):
+            cell, neighbour = self.rng.choice(self.canvas.dead_ends)
             self.canvas.remove_wall(cell, neighbour)
 
     def put_ft_cells(self) -> None:
