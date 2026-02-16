@@ -4,6 +4,7 @@ import sys
 import time
 import shutil
 from enum import Enum
+from models.cell import Cell
 
 
 class Presets(Enum):
@@ -39,13 +40,13 @@ class Renderer():
 
     def __init__(self, width: int, height: int,
                  entry: tuple[int, int], exit: tuple[int, int],
-                 cells: list[int], solution: str) -> None:
+                 cells: list[Cell], solution: str, color_index: int = 0) -> None:
         self.width = width
         self.height = height
         self.cells = cells
         self.solution = solution
 
-        self.color_index = 0
+        self.color_index = color_index
         self.show_path = False
         self.path_animated = False
         self.grid_width = width * 2 + 1
@@ -105,7 +106,7 @@ class Renderer():
 
             for row in range(self.height):
                 for col in range(self.width):
-                    cell = self.cells[row * self.width + col]
+                    cell = self.cells[row * self.width + col].direction.value
                     y = row * 2 + 1
                     x = col * 2 + 1
 

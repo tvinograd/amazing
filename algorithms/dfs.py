@@ -1,8 +1,9 @@
 from models.canvas import Canvas
 from models.cell import Cell
+from typing import Generator
 import random
 
-def generate_maze(canvas: Canvas, start_cell: Cell, rng: random.Random) -> None:
+def generate_maze(canvas: Canvas, start_cell: Cell, rng: random.Random) -> Generator[str, None, None]:
 
     if not canvas or not start_cell:
         return
@@ -27,3 +28,4 @@ def generate_maze(canvas: Canvas, start_cell: Cell, rng: random.Random) -> None:
                 neighbour_behind_wall = rng.choice(inaccessible_neighbours)
                 canvas.dead_ends.append((cell, neighbour_behind_wall))
             stack.pop()
+        yield ""
