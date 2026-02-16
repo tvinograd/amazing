@@ -22,6 +22,7 @@ class MazeGenerator():
         self.perfect = config["PERFECT"]
         self.seed = config["SEED"]
         self.algorithm = config["ALGORITHM"]
+        self.output_file = config["OUTPUT_FILE"]
         self.rng = random.Random(self.seed)
 
     def set_canvas(self) -> None:
@@ -148,6 +149,24 @@ class MazeGenerator():
                     continue
             return True
         return False
+
+    def fill_output(self) -> None:
+        with open(self.output_file, "w") as file:
+            output = ""
+
+            for y in range(self.canvas.height):
+                for x in range(self.canvas.width):
+                    output += f"{self.canvas.get_cell(x, y).direction.value:x}".upper()
+                output += "\n"
+
+            entry_txt = ", ".join(map(str, self.canvas.entry))
+            exit_txt = ", ".join(map(str, self.canvas.exit))
+
+            output += (f"\n{entry_txt}\n"
+                       f"{exit_txt}\n"
+                       f"{self.renderer.solution}\n")
+
+            file.write(output)
 
     @staticmethod
     def convert_path_to_str(path: list[Cell]) -> str:
