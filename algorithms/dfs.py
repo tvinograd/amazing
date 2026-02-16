@@ -25,5 +25,5 @@ def generate_maze(canvas: Canvas, start_cell: Cell, rng: random.Random) -> None:
             inaccessible_neighbours = [neighbour for neighbour in neighbours if neighbour not in accessible_neighbours and neighbour not in canvas.ft_cells]
             if inaccessible_neighbours:
                 neighbour_behind_wall = rng.choice(inaccessible_neighbours)
-                canvas.dead_ends.add((cell, neighbour_behind_wall))
+                canvas.dead_ends.append((cell, neighbour_behind_wall))
             stack.pop()

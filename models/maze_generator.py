@@ -3,7 +3,6 @@ from models.direction import Direction
 from models.canvas import Canvas
 from models.config_parser import ConfigParser
 from models.renderer import Renderer
-from algorithms import dfs
 from collections import deque
 import random
 import sys
@@ -21,6 +20,7 @@ class MazeGenerator():
         self.exit = config["EXIT"]
         self.perfect = config["PERFECT"]
         self.seed = config["SEED"]
+        self.algorithm = config["ALGORITHM"]
         self.rng = random.Random(self.seed)
 
     def set_canvas(self) -> None:
@@ -41,11 +41,16 @@ class MazeGenerator():
 
     def generate_maze(self) -> None:
         try:
-            dfs.generate_maze(self.canvas, self.canvas.cells[0], self.rng)
+            if self.algorithm == "dfs":
+                from algorithms.dfs import generate_maze
+            elif self.algorithm == "hunt_and_kill":
+                from algorithms.hunt_and_kill import generate_maze
+            generate_maze(self.canvas, self.canvas.cells[0], self.rng)
             if not self.perfect:
                 self.remove_dend_walls()
             while self.has_forbidden_opened_block():
-                dfs.generate_maze(self.canvas, self.canvas.cells[0], self.rng)
+                self.set_canvas()
+                generate_maze(self.canvas, self.canvas.cells[0], self.rng)
                 if not self.perfect:
                     self.remove_dend_walls()
 
@@ -124,11 +129,21 @@ class MazeGenerator():
                     queue.append((neighbour, path + [neighbour]))
 
     def has_forbidden_opened_block(self) -> bool:
-        opened = {cell.coordinate for cell in self.canvas.cells if cell.direction.value == Direction.OPENED.value}
-        for x, y in opened:
-            block = {(x + dx, y + dy) for dx in range(3) for dy in range(3)}
-            if block.issubset(opened):
-                return True
+        opened_cells = {cell for cell in self.canvas.cells if cell.direction.value == Direction.OPENED.value}
+        for opened_cell in opened_cells:
+            x, y = opened_cell.coordinate
+            north_neighbour = self.canvas.get_cell(x, y - 1)
+            south_neighbour = self.canvas.get_cell(x, y + 1)
+            west_neighbour = self.canvas.get_cell(x - 1, y)
+            east_neighbour = self.canvas.get_cell(x + 1, y)
+            if not north_neighbour or not south_neighbour or not west_neighbour or not east_neighbour:
+                continue
+            if (not (north_neighbour.direction.can_see(Direction.S) and north_neighbour.direction.can_see(Direction.W) and north_neighbour.direction.can_see(Direction.E)) or
+                not (south_neighbour.direction.can_see(Direction.N) and south_neighbour.direction.can_see(Direction.W) and south_neighbour.direction.can_see(Direction.E)) or
+                not (west_neighbour.direction.can_see(Direction.S) and west_neighbour.direction.can_see(Direction.E) and west_neighbour.direction.can_see(Direction.N)) or
+                not (east_neighbour.direction.can_see(Direction.S) and east_neighbour.direction.can_see(Direction.W) and east_neighbour.direction.can_see(Direction.N))):
+                    continue
+            return True
         return False
 
 

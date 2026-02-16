@@ -9,7 +9,7 @@ class Canvas():
         self.ft_cells: list[Cell] = []
         self.entry: tuple[int, int] = entry
         self.exit: tuple[int, int] = exit
-        self.dead_ends: set[tuple[Cell, Cell]] = set()
+        self.dead_ends: list[tuple[Cell, Cell]] = []
 
         for x in range(width):
             for y in range(height):
