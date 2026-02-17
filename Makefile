@@ -35,6 +35,5 @@ lint-strict:
 
 	@echo Checking with mypy --strict...
 	@mypy . --exclude venv,.venv,env,.env --strict
-	@# if there are no issues we reach the following line
 
 .PHONY: install run debug clean lint lint-strict
