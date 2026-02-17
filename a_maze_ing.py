@@ -12,7 +12,7 @@ if __name__ == "__main__":
         maze_generator.set_canvas()
     except ValueError as e:
         print(e)
-        sys.exit(1)
+        sys.exit(0)
 
     maze_generator.set_renderer()
     maze_generator.generate_maze()

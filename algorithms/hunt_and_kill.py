@@ -58,6 +58,7 @@ def generate_maze(
                         if visited:
                             neighbour = rng.choice(visited)
                             canvas.remove_wall(hunt_cell, neighbour)
+                            cell = hunt_cell
                             found = True
                             break
                 if found:

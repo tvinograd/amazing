@@ -24,7 +24,7 @@ class MazeGenerator():
         config = ConfigParser().parse_config(config_file)
         if not config:
             print("Failed to load configuration. Exiting.")
-            sys.exit(1)
+            sys.exit(0)
         self.width = config["WIDTH"]
         self.height = config["HEIGHT"]
         self.entry = config["ENTRY"]
@@ -225,9 +225,7 @@ class MazeGenerator():
             )
 
             if not all([north_open, south_open, west_open, east_open]):
-                continue
-
-            return True
+                return True
 
         return False
 

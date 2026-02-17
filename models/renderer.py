@@ -60,7 +60,7 @@ class Renderer():
             width: Maze width in cells.
             height: Maze height in cells.
             entry: Entry coordinates (x, y).
-            exit_: Exit coordinates (x, y).
+            exit: Exit coordinates (x, y).
             cells: List of maze cells.
             solution: Solution path as direction string.
             color_index: Starting wall color index.
