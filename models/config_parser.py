@@ -1,8 +1,10 @@
+"""Configuration file parser for maze generation."""
+
 from typing import Any
 
 
 class ConfigParser:
-    "Configuration file parser for maze generation."
+    """Parse and validate maze configuration file."""
 
     required_keys: set[str] = {
         "WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"
@@ -10,14 +12,31 @@ class ConfigParser:
 
     @staticmethod
     def parse_coordinates(value: str) -> tuple[int, int]:
-        """Parse 'x,y' string into a tuple of two integers."""
+        """Parse 'x,y' string into a tuple of two integers.
+
+        Args:
+            value: String in format 'x,y'.
+
+        Returns:
+            Tuple of (x, y) integers.
+
+        Raises:
+            ValueError: If format is invalid.
+        """
         parts = value.split(",")
         if len(parts) != 2:
             raise ValueError
         return (int(parts[0].strip()), int(parts[1].strip()))
 
     def convert_values(self, raw: dict[str, str]) -> dict[str, Any]:
-        """Convert raw string values to appropriate types."""
+        """Convert raw string values to appropriate types.
+
+        Args:
+            raw: Dictionary of raw key-value string pairs.
+
+        Returns:
+            Dictionary with converted values, or empty dict on error.
+        """
         config: dict[str, Any] = {}
 
         # Height/width -> int
@@ -63,16 +82,22 @@ class ConfigParser:
         if not algorithm:
             config["ALGORITHM"] = "dfs"
         elif algorithm not in ("dfs", "hunt_and_kill"):
-            print("Wrong algorithm name")
-            exit(1)
+            print("Error: ALGORITHM must be 'dfs' or 'hunt_and_kill'.")
+            return {}
         else:
             config["ALGORITHM"] = algorithm
 
         return config
 
     def parse_config(self, filepath: str) -> dict[str, Any]:
-        """Parse a maze configuration file."""
+        """Parse a maze configuration file.
 
+        Args:
+            filepath: Path to the configuration file.
+
+        Returns:
+            Dictionary with parsed configuration, or empty dict on error.
+        """
         # Read file
         try:
             with open(filepath, "r") as file:
@@ -108,15 +133,4 @@ class ConfigParser:
             print(f"Error: Missing required keys: {', '.join(missing)}")
             return {}
 
-        # Convert types and return
         return self.convert_values(raw)
-
-
-if __name__ == "__main__":
-    config = ConfigParser().parse_config("config.txt")
-    if config:
-        print("Configuration file parsing is successful:")
-        for key, value in config.items():
-            print(f"  {key}: {value} ({type(value).__name__})")
-    else:
-        print("Configuration file parsing failed.")
