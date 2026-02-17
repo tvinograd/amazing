@@ -51,7 +51,7 @@ def generate_maze(
                 for x in range(canvas.width):
                     hunt_cell = canvas.get_cell(x, y)
                     if hunt_cell and not hunt_cell.is_visited:
-                        neighbours = canvas.get_neighbours(cell)
+                        neighbours = canvas.get_neighbours(hunt_cell)
                         visited = [
                             n for n in neighbours
                             if n.is_visited and n not in canvas.ft_cells

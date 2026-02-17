@@ -19,10 +19,9 @@ if __name__ == "__main__":
     maze_generator.solve_maze()
     maze_generator.fill_output()
 
-    renderer = maze_generator.renderer
-
     try:
         while True:
+            renderer = maze_generator.renderer
             renderer.render_maze()
             print("\n=== A-Maze-ing ===")
             print("1. Re-generate a new maze")
