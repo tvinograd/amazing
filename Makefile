@@ -1,14 +1,17 @@
+CONFIG_FILE = config.txt
 DIRS_TO_CLEAN = __pycache__ .mypy_cache
 FILES_TO_CLEAN = *.pyc
 
 install:
-	uv pip install flake8 mypy
+	@echo Installing flake8 and mypy
+	@uv pip install flake8 mypy
 
 run:
-	python3 a_maze_ing.py
+	@python3 a_maze_ing.py $(CONFIG_FILE)
 
 debug:
-	python3 -m pdb a_maze_ing.py
+	@echo Entering debug mode...
+	@python3 -m pdb a_maze_ing.py
 
 clean:
 	@echo cleaning... "\n"removing $(DIRS_TO_CLEAN) $(FILES_TO_CLEAN)

@@ -6,7 +6,13 @@ from models.maze_generator import MazeGenerator
 
 if __name__ == "__main__":
     """Run main program."""
-    maze_generator = MazeGenerator("config.txt")
+
+    if len(sys.argv) != 2:
+        print("Wrong command format\n"
+              "Usage: python3 a_maze_ing.py <config_file>")
+        sys.exit(0)
+
+    maze_generator = MazeGenerator(sys.argv[1])
 
     try:
         maze_generator.set_canvas()
