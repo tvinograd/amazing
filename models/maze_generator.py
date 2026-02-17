@@ -224,7 +224,7 @@ class MazeGenerator():
                 and east.direction.can_see(Direction.N)
             )
 
-            if not all([north_open, south_open, west_open, east_open]):
+            if all([north_open, south_open, west_open, east_open]):
                 return True
 
         return False

@@ -54,7 +54,8 @@ def generate_maze(
                         neighbours = canvas.get_neighbours(cell)
                         visited = [
                             n for n in neighbours
-                            if n.is_visited and n not in canvas.ft_cells]
+                            if n.is_visited and n not in canvas.ft_cells
+                        ]
                         if visited:
                             neighbour = rng.choice(visited)
                             canvas.remove_wall(hunt_cell, neighbour)
