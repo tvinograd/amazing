@@ -147,6 +147,18 @@ generator.solve_maze()
 path = generator.canvas.solution
 print(path)  # "SSEENNEEESSSSWWW"
 ```
+The shortest path between entry and exit is computed using **Breadth-First Search (BFS)**.
+
+This guarantees:
+
+- Shortest valid path
+- Deterministic output
+- Correct path encoding
+
+The path is written using:
+```
+N E S W
+```
 
 ## Output File
 
