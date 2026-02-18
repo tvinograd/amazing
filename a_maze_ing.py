@@ -54,4 +54,3 @@ if __name__ == "__main__":
                 break
     except Exception as e:
         print(f"Error: {e}")
-        exit(0)

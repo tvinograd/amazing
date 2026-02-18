@@ -47,16 +47,33 @@ class ConfigParser:
             print("Error: WIDTH and HEIGHT must be integers.")
             return {}
 
+        if config["WIDTH"] <= 0 or config["HEIGHT"] <= 0:
+            print("Error: WIDTH and HEIGHT must be positive integers.")
+            return {}
+
         # Entry/exit -> int tuple
         try:
             config["ENTRY"] = self.parse_coordinates(raw["ENTRY"])
             config["EXIT"] = self.parse_coordinates(raw["EXIT"])
-            if config["ENTRY"] == config["EXIT"]:
-                print("Error: ENTRY and EXIT must be different.")
-                return {}
         except ValueError:
             print("Error: ENTRY and EXIT must be in format 'x,y' with "
                   "integers.")
+            return {}
+
+        if config["ENTRY"] == config["EXIT"]:
+            print("Error: ENTRY and EXIT must be different.")
+            return {}
+
+        entry_x, entry_y = config["ENTRY"]
+        if not (0 <= entry_x < config["WIDTH"]
+                and 0 <= entry_y < config["HEIGHT"]):
+            print("Error: ENTRY is out of bounds.")
+            return {}
+
+        exit_x, exit_y = config["EXIT"]
+        if not (0 <= exit_x < config["WIDTH"]
+                and 0 <= exit_y < config["HEIGHT"]):
+            print("Error: EXIT is out of bounds.")
             return {}
 
         # Perfect -> bool
