@@ -30,7 +30,7 @@ OUTPUT_FILE
 PERFECT
 ```
 
-Optional keys example:
+Optional keys:
 ```
 SEED
 ALGORITHM

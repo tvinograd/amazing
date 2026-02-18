@@ -62,7 +62,7 @@ Both algorithms ensure full connectivity of the maze while respecting structural
 Both DFS and Hunt-and-Kill:
 
 - Guarantee full connectivity
-- Are simple to implement and reason about
+- Are simple to implement
 - Allow deterministic generation via seed
 - Respect structural constraints required by the subject
 - Scale efficiently for large mazes
@@ -110,7 +110,7 @@ The project includes a `Makefile` with:
 | install | Install dependencies |
 | run | Run the main program |
 | debug | Run with pdb |
-| clean | Remove caches (__pycache__, .mypy_cache, .pyc) |
+| clean | Remove caches (\_\_pycache__, .mypy_cache, .pyc) |
 | lint | flake8 + mypy --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs |
 | lint-strict | flake8 + mypy --strict |
 
@@ -148,7 +148,7 @@ OUTPUT_FILE
 PERFECT
 ```
 
-Optional keys example:
+Optional keys:
 ```
 SEED
 ALGORITHM
@@ -413,8 +413,9 @@ All critical parts were reviewed jointly before final integration.
 ## Planning Evolution
 
 Initial Plan:
+- OOP approach
 - Recursive DFS
-- Basic file output
+- ASCII renderer
 
 Evolution:
 - Switched to iterative DFS
@@ -423,6 +424,7 @@ Evolution:
 - Implemented BFS solver
 - Built reusable package
 - Added interactive display
+- Added animation while generating a maze and drawing a path
 
 ---
 
@@ -431,7 +433,6 @@ Evolution:
 - Clear division of responsibilities
 - Modular architecture
 - Deterministic generation
-- Clear separation between generator and UI
 - Packaging as reusable module
 
 ---
