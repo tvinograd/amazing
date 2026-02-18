@@ -1,7 +1,7 @@
 """Main program for maze generator."""
 
 import sys
-from models.maze_generator import MazeGenerator
+from mazegen import MazeGenerator
 
 
 if __name__ == "__main__":

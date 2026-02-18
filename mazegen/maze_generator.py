@@ -5,11 +5,11 @@ import sys
 import time
 from collections import deque
 
-from models.cell import Cell
-from models.direction import Direction
-from models.canvas import Canvas
-from models.config_parser import ConfigParser
-from models.renderer import Renderer
+from mazegen.cell import Cell
+from mazegen.direction import Direction
+from mazegen.canvas import Canvas
+from mazegen.config_parser import ConfigParser
+from mazegen.renderer import Renderer
 
 
 class MazeGenerator():
@@ -99,9 +99,9 @@ class MazeGenerator():
         """Generate maze using selected algorithm."""
         try:
             if self.algorithm == "dfs":
-                from algorithms.dfs import generate_maze
+                from mazegen.algorithms.dfs import generate_maze
             elif self.algorithm == "hunt_and_kill":
-                from algorithms.hunt_and_kill import generate_maze
+                from mazegen.algorithms.hunt_and_kill import generate_maze
 
             for _ in generate_maze(
                 self.canvas, self.canvas.cells[0], self.rng

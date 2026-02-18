@@ -1,7 +1,7 @@
 """Canvas module for maze grid management."""
 
-from models.cell import Cell
-from models.direction import Direction
+from mazegen.cell import Cell
+from mazegen.direction import Direction
 
 
 class Canvas():
