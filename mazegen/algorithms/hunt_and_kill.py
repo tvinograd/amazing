@@ -3,8 +3,8 @@
 import random
 from typing import Generator
 
-from models.canvas import Canvas
-from models.cell import Cell
+from mazegen.canvas import Canvas
+from mazegen.cell import Cell
 
 
 def generate_maze(

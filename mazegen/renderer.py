@@ -8,7 +8,7 @@ import time
 from enum import Enum
 from types import FrameType
 
-from models.cell import Cell
+from mazegen.cell import Cell
 
 
 class Presets(Enum):

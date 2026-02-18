@@ -1,6 +1,6 @@
 """Cell module representing a single maze cell."""
 
-from models.direction import Direction
+from mazegen.direction import Direction
 
 
 class Cell:
