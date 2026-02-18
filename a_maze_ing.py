@@ -26,34 +26,40 @@ if __name__ == "__main__":
     maze_generator.fill_output()
 
     try:
-        while True:
-            renderer = maze_generator.renderer
-            renderer.render_maze()
-            if not maze_generator.is_size_suitable_ft():
-                print("\n'42' pattern was omitted due to "
-                      "the limited maze size.")
-            print("\n=== A-Maze-ing ===")
-            print("1. Re-generate a new maze")
-            print("2. Show/Hide path from entry to exit")
-            print("3. Rotate maze colors")
-            print("4. Quit")
-            choice = input("Choice? (1-4): ")
+        if maze_generator.renderer:
+            while True:
+                renderer = maze_generator.renderer
+                renderer.render_maze()
+                if not maze_generator.is_size_suitable_ft():
+                    print("\n'42' pattern was omitted due to "
+                          "the limited maze size.")
+                print("\n=== A-Maze-ing ===")
+                print("1. Re-generate a new maze")
+                print("2. Show/Hide path from entry to exit")
+                print("3. Rotate maze colors")
+                print("4. Quit")
+                choice = input("Choice? (1-4): ")
 
-            if choice == "1":
-                maze_generator.regenerate_maze()
-                maze_generator.solve_maze()
-                maze_generator.fill_output()
-                renderer.path_animated = False
-            elif choice == "2":
-                renderer.show_path = not renderer.show_path
-                if not renderer.show_path:
+                if choice == "1":
+                    maze_generator.regenerate_maze()
+                    maze_generator.solve_maze()
+                    maze_generator.fill_output()
                     renderer.path_animated = False
-            elif choice == "3":
-                renderer.color_index = (
-                    (renderer.color_index + 1) % len(renderer.wall_colors)
-                )
-            elif choice == "4":
-                print("Bye!")
-                break
+                elif choice == "2":
+                    renderer.show_path = not renderer.show_path
+                    if not renderer.show_path:
+                        renderer.path_animated = False
+                elif choice == "3":
+                    renderer.color_index = (
+                        (renderer.color_index + 1) % len(renderer.wall_colors)
+                    )
+                elif choice == "4":
+                    print("Bye!")
+                    sys.exit(0)
+        if not maze_generator.is_size_suitable_ft():
+            print("'42' pattern was omitted due to "
+                  "the limited maze size.")
+        print("No renderer was set. The generated data was stored "
+              "in specified output file.")
     except Exception as e:
         print(f"Error: {e}")

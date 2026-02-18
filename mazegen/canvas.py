@@ -29,6 +29,7 @@ class Canvas():
         self.entry: tuple[int, int] = entry
         self.exit: tuple[int, int] = exit
         self.dead_ends: list[tuple[Cell, Cell]] = []
+        self.solution: str = ""
 
         for x in range(width):
             for y in range(height):

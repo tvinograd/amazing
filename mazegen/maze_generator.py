@@ -34,6 +34,7 @@ class MazeGenerator():
         self.algorithm = config["ALGORITHM"]
         self.output_file = config["OUTPUT_FILE"]
         self.rng = random.Random(self.seed)
+        self.renderer: Renderer | None = None
 
     def is_size_suitable_ft(self) -> bool:
         """Check whether the current dimensions meet
@@ -106,8 +107,9 @@ class MazeGenerator():
             for _ in generate_maze(
                 self.canvas, self.canvas.cells[0], self.rng
             ):
-                self.renderer.render_maze()
-                time.sleep(0.01)
+                if self.renderer:
+                    self.renderer.render_maze()
+                    time.sleep(0.01)
 
             if not self.perfect:
                 self.remove_dend_walls()
@@ -123,10 +125,12 @@ class MazeGenerator():
 
     def regenerate_maze(self) -> None:
         """Regenerate maze with the same settings."""
-        self.renderer.show_path = False
+        if self.renderer:
+            self.renderer.show_path = False
         self.rng = random.Random(self.seed)
         self.set_canvas()
-        self.set_renderer(self.renderer.color_index)
+        if self.renderer:
+            self.set_renderer(self.renderer.color_index)
         self.generate_maze()
 
     def remove_dend_walls(self) -> None:
@@ -187,7 +191,9 @@ class MazeGenerator():
             cell.is_visited = True
 
             if cell.coordinate == self.canvas.exit:
-                self.renderer.solution = self.convert_path_to_str(path)
+                self.canvas.solution = self.convert_path_to_str(path)
+                if self.renderer:
+                    self.renderer.solution = self.canvas.solution
                 return
 
             for neighbour in self.canvas.get_accessible_neighbours(cell):
@@ -262,7 +268,7 @@ class MazeGenerator():
             output += (
                 f"\n{entry_txt}\n"
                 f"{exit_txt}\n"
-                f"{self.renderer.solution}\n"
+                f"{self.canvas.solution}\n"
             )
 
             file.write(output)
