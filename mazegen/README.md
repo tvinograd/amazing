@@ -30,7 +30,7 @@ OUTPUT_FILE
 PERFECT
 ```
 
-Optional keys example:
+Optional keys:
 ```
 SEED
 ALGORITHM
@@ -41,7 +41,7 @@ ALGORITHM
 # Initialize the canvas (maze grid)
 generator.set_canvas()
 
-# Initialize the renderer
+# Initialize the renderer (optional)
 generator.set_renderer()
 
 # Generate the maze
@@ -144,8 +144,20 @@ for y in range(generator.height):
 After calling `solve_maze()`, the solution is stored as a direction string:
 ```python
 generator.solve_maze()
-path = generator.renderer.solution
+path = generator.canvas.solution
 print(path)  # "SSEENNEEESSSSWWW"
+```
+The shortest path between entry and exit is computed using **Breadth-First Search (BFS)**.
+
+This guarantees:
+
+- Shortest valid path
+- Deterministic output
+- Correct path encoding
+
+The path is written using:
+```
+N E S W
 ```
 
 ## Output File
@@ -175,6 +187,7 @@ generator = MazeGenerator("config.txt")
 
 # Setup
 generator.set_canvas()
+# Create and set a renderer if necessary.
 generator.set_renderer()
 
 # Generate and solve
@@ -185,8 +198,8 @@ generator.solve_maze()
 print(f"Size: {generator.width}x{generator.height}")
 print(f"Entry: {generator.entry}")
 print(f"Exit: {generator.exit}")
-print(f"Solution: {generator.renderer.solution}")
-print(f"Solution length: {len(generator.renderer.solution)} steps")
+print(f"Solution: {generator.canvas.solution}")
+print(f"Solution length: {len(generator.canvas.solution)} steps")
 
 # Print maze as hex
 for y in range(generator.height):
