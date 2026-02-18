@@ -104,25 +104,33 @@ class Renderer():
             return True
         return False
 
-    def check_terminal_size(self) -> bool:
-        """Check if terminal is wide enough for the maze.
+    def check_terminal_size(self) -> None:
+        """Ensure the terminal window is wide enough to render the maze.
 
-        Returns:
-            True if rendering should proceed.
+        Continuously checks the current terminal width against the required
+        width derived from the maze grid. If the terminal is too narrow,
+        prompts the user to resize the window or exit the program.
+
+        The program terminates if the user chooses not to retry.
         """
-        term_size = shutil.get_terminal_size()
-        term_width = term_size.columns
         required_width = self.grid_width * 2
 
-        if term_width < required_width:
-            print(
-                "\nYour terminal is not wide enough to display the maze "
-                "correctly. We recommend resizing your window first."
-            )
-            size_choice = input("\nRender anyway? (y/n): ").lower().strip()
-            return size_choice in ("y", "yes")
+        while True:
+            term_width = shutil.get_terminal_size().columns
 
-        return True
+            if term_width < required_width:
+                print(
+                    "\nYour terminal is not wide enough to display the maze "
+                    "correctly.\nPlease resize your window or change "
+                    "initial width value in the configuration file, and "
+                    "then restart the program."
+                )
+                user_choice = input("\nTry again? (y/n): ").lower().strip()
+                if user_choice not in ("y", "yes"):
+                    print("\nBye!")
+                    sys.exit(0)
+            else:
+                break
 
     def draw_grid(self, grid: list[list[str]]) -> None:
         """Clear screen and draw the grid.
@@ -137,9 +145,7 @@ class Renderer():
     def render_maze(self) -> None:
         """Render maze to the terminal."""
         try:
-            if not self.check_terminal_size():
-                print("\nBye!")
-                sys.exit(0)
+            self.check_terminal_size()
 
             print("\033c", end="")
             colored_wall = (
