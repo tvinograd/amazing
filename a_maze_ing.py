@@ -29,6 +29,9 @@ if __name__ == "__main__":
         while True:
             renderer = maze_generator.renderer
             renderer.render_maze()
+            if not maze_generator.is_size_suitable_ft():
+                print("\n'42' pattern was omitted due to "
+                      "the limited maze size.")
             print("\n=== A-Maze-ing ===")
             print("1. Re-generate a new maze")
             print("2. Show/Hide path from entry to exit")

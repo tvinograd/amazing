@@ -35,6 +35,21 @@ class MazeGenerator():
         self.output_file = config["OUTPUT_FILE"]
         self.rng = random.Random(self.seed)
 
+    def is_size_suitable_ft(self) -> bool:
+        """Check whether the current dimensions meet
+        the minimum size requirements.
+
+        Ensures the width is at least 9 and the height is at least 7,
+        which are the minimum dimensions required to accommodate pattern '42'.
+
+        Returns:
+            True if both width and height meet the minimum requirements,
+            otherwise False.
+        """
+        if self.width >= 9 and self.height >= 7:
+            return True
+        return False
+
     def set_canvas(self) -> None:
         """Initialize maze canvas.
 
@@ -42,7 +57,7 @@ class MazeGenerator():
             ValueError: If entry/exit overlaps with '42' pattern.
         """
         self.canvas = Canvas(self.width, self.height, self.entry, self.exit)
-        if self.width >= 9 and self.height >= 7:
+        if self.is_size_suitable_ft():
             self.put_ft_cells()
 
             entry_cell = self.canvas.get_cell(self.entry[0], self.entry[1])
