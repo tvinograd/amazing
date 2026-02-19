@@ -11,7 +11,7 @@ run:
 
 debug:
 	@echo Entering debug mode...
-	@python3 -m pdb a_maze_ing.py
+	@python3 -m pdb a_maze_ing.py $(CONFIG_FILE)
 
 clean:
 	@echo cleaning... "\n"removing $(DIRS_TO_CLEAN) $(FILES_TO_CLEAN)
