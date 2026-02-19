@@ -120,6 +120,9 @@ class ConfigParser:
             with open(filepath, "r") as file:
                 lines = file.readlines()
         except OSError as e:
+            print(f"I/O error: {e}")
+            return {}
+        except Exception as e:
             print(f"Error: {e}")
             return {}
 
