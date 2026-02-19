@@ -85,6 +85,10 @@ class ConfigParser:
         # Output file name -> str
         config["OUTPUT_FILE"] = raw["OUTPUT_FILE"]
 
+        if not config["OUTPUT_FILE"]:
+            print("Error: Output file name is missing")
+            return {}
+
         # Seed -> int | None
         if raw.get("SEED"):
             try:
